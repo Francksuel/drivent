@@ -3,6 +3,14 @@ export type ApplicationError = {
   message: string;
 };
 
+export type CEP = {
+  logradouro: string,
+  complemento: string,
+  bairro: string,
+  cidade: string,
+  uf: string,
+};
+
 export type ViaCEPAddress = {
   logradouro: string,
   complemento: string,
