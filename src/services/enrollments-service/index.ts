@@ -8,7 +8,6 @@ import { CEP } from "@/protocols";
 
 async function getAddressFromCEP(cep: string): Promise<CEP> {
   const result = await request.get(`https://viacep.com.br/ws/${cep}/json/`);
-
   if (!result.data) {
     throw notFoundError();
   }  
@@ -48,8 +47,12 @@ type GetAddressResult = Omit<Address, "createdAt" | "updatedAt" | "enrollmentId"
 async function createOrUpdateEnrollmentWithAddress(params: CreateOrUpdateEnrollmentWithAddress) {
   const enrollment = exclude(params, "address");
   const address = getAddressForUpsert(params.address);
+  const result = await request.get(`https://viacep.com.br/ws/${address.cep}/json/`);
 
-  //TODO - Verificar se o CEP é válido
+  if (result.data.erro) {
+    throw requestError(400, "BAD_REQUEST");
+  }
+  
   const newEnrollment = await enrollmentRepository.upsert(params.userId, enrollment, exclude(enrollment, "userId"));
 
   await addressRepository.upsert(newEnrollment.id, address, address);
