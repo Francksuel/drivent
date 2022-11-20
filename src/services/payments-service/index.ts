@@ -1,6 +1,7 @@
 import { notFoundError } from "@/errors";
 import paymentsRepository from "@/repositories/payments-repository";
 import { Payment } from "@prisma/client";
+import ticketsService from "../tickets-service";
 
 async function getOneByTicketId(ticketId: number): Promise<Payment> {
   const payment = await paymentsRepository.findByTicketId(ticketId);
@@ -10,8 +11,19 @@ async function getOneByTicketId(ticketId: number): Promise<Payment> {
   return payment;
 }
 
+async function createPayment(ticketId: number, value: number, cardIssuer: string, cardLastDigits: string): Promise<Payment> {
+  const data = {
+    ticketId,
+    value,
+    cardIssuer,
+    cardLastDigits
+  };
+  return paymentsRepository.create(data);
+}
+
 const paymentsService = {    
-  getOneByTicketId,   
+  getOneByTicketId,
+  createPayment   
 };
     
 export default paymentsService;
