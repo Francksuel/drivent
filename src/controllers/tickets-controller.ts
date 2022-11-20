@@ -26,7 +26,7 @@ export async function getTicketByEnrollmentId(req: AuthenticatedRequest, res: Re
 }
 
 export async function postCreateTicket(req: AuthenticatedRequest, res: Response) {
-  const { ticketTypeId } = req.body;
+  const ticketTypeId: number  = req.body.ticketTypeId;
   const { userId } = req;
   try {    
     const ticket =  await ticketsService.createTicket(

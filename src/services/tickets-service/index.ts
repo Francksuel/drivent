@@ -36,11 +36,16 @@ async function createTicket(userId: number, ticketTypeId: number): Promise<Ticke
   return ticketRepository.create(data);
 }
 
+async function updateTicketStatus(ticketId: number) {
+  return ticketRepository.update(ticketId);
+}
+
 const ticketsService = {
   getTicketTypes,
   getOneByEnrollmentId,
   getOneByTicketId,
-  createTicket
+  createTicket,
+  updateTicketStatus
 };
   
 export default ticketsService;
