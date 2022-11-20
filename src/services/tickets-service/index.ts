@@ -18,6 +18,14 @@ async function getOneByEnrollmentId(enrollmentId: number): Promise<Ticket & {
   return ticket;
 }
 
+async function getOneByTicketId(ticketId: number): Promise<Ticket> {
+  const ticket = await ticketRepository.findByTicketId(ticketId);
+
+  if (!ticket.id) throw notFoundError();
+
+  return ticket;
+}
+
 async function createTicket(userId: number, ticketTypeId: number): Promise<Ticket> {
   const enrollment = await enrollmentsService.getOneWithAddressByUserId(userId);
   const data = {
@@ -31,6 +39,7 @@ async function createTicket(userId: number, ticketTypeId: number): Promise<Ticke
 const ticketsService = {
   getTicketTypes,
   getOneByEnrollmentId,
+  getOneByTicketId,
   createTicket
 };
   
