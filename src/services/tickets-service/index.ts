@@ -1,5 +1,5 @@
 import { notFoundError } from "@/errors";
-import ticketRepository from "@/repositories/tickets-repository";
+import ticketRepository from "@/repositories/ticket-repository";
 import { Ticket, TicketStatus, TicketType } from "@prisma/client";
 import enrollmentsService from "../enrollments-service";
 

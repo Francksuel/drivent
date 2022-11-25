@@ -1,5 +1,5 @@
 import { notFoundError } from "@/errors";
-import paymentsRepository from "@/repositories/payments-repository";
+import paymentsRepository from "@/repositories/payment-repository";
 import { Payment } from "@prisma/client";
 
 async function getOneByTicketId(ticketId: number): Promise<Payment> {
