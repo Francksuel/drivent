@@ -18,14 +18,17 @@ export async function getHotels(req: AuthenticatedRequest, res: Response) {
     return res.status(httpStatus.BAD_REQUEST).send({});
   }
 }
-export async function getRooms(_req: AuthenticatedRequest, res: Response) {
-  //const { userId } = req;
+export async function getRooms(req: AuthenticatedRequest, res: Response) {
+  const { userId } = req;
+  const hotelId = Number(req.params.hotelId);
   try {    
-    //const enrollment = await enrollmentsService.getOneWithAddressByUserId(userId);         
-    // const hotels = await hotelsService.getManyHotels(enrollment.id);
-    
-    return res.status(httpStatus.OK).send();
+    const enrollment = await enrollmentsService.getOneWithAddressByUserId(userId);         
+    const rooms = await hotelsService.getRoomsByHotelId(hotelId, enrollment.id);    
+    return res.status(httpStatus.OK).send(rooms);
   } catch (error) { 
-    res.status(httpStatus.BAD_REQUEST).send({});
+    if (error.name === "NotFoundError") {
+      return res.status(httpStatus.NOT_FOUND).send({});
+    }  
+    return res.status(httpStatus.BAD_REQUEST).send({});
   }
 }
