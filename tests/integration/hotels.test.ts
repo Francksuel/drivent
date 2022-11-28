@@ -125,7 +125,7 @@ describe("GET /hotels/:hotelId", () => {
     it("should respond with status 404 when hotel id is not valid", async () => {
       const user = await createUser();
       const token = await generateValidToken(user);     
-      const invalidHotelId = 5;
+      const invalidHotelId = 0;
       const response = await server.get("/hotels/"+invalidHotelId).set("Authorization", `Bearer ${token}`);
 
       expect(response.status).toEqual(httpStatus.NOT_FOUND);
