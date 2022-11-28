@@ -31,8 +31,7 @@ async function getRoomsByHotelId(hotelId: number, enrollmentId: number) {
   if(!hotel.id) {    
     throw notFoundError();
   }  
-  const rooms = await hotelRepository.findManyRoomsByHotelId(hotelId);
-  return rooms;
+  return hotel;
 }
 
 const hotelsService = {

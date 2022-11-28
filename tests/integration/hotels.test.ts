@@ -4,7 +4,7 @@ import { TicketStatus } from "@prisma/client";
 import httpStatus from "http-status";
 import * as jwt from "jsonwebtoken";
 import supertest from "supertest";
-import { createEnrollmentWithAddress, createUser, createTicketType, createTicket, createTicketTypeWithHotel, createhAddressWithCEP } from "../factories";
+import { createEnrollmentWithAddress, createUser, createTicket, createTicketTypeWithHotel } from "../factories";
 import { createHotel, createRoom } from "../factories/hotels-factory";
 import { cleanDb, generateValidToken } from "../helpers";
 
@@ -149,10 +149,17 @@ describe("GET /hotels/:hotelId", () => {
       const ticketType = await createTicketTypeWithHotel(false, true);
       await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);  
       const hotel = await createHotel();
-     
+      
       const response = await server.get("/hotels/"+hotel.id).set("Authorization", `Bearer ${token}`);
 
-      expect(response.body).toEqual([]);
+      expect(response.body).toEqual({
+        id: hotel.id,
+        name: hotel.name,
+        image: hotel.image,
+        createdAt: hotel.createdAt.toISOString(),
+        updatedAt: hotel.updatedAt.toISOString(),
+        Rooms: []
+      });
     });
 
     it("should respond with status 200 and with existing rooms data", async () => {
@@ -166,16 +173,23 @@ describe("GET /hotels/:hotelId", () => {
       const response = await server.get("/hotels/"+hotel.id).set("Authorization", `Bearer ${token}`);
 
       expect(response.status).toBe(httpStatus.OK);
-      expect(response.body).toEqual([
-        {
-          id: room.id,
-          name: room.name,
-          capacity: room.capacity,
-          hotelId: room.hotelId,                    
-          createdAt: room.createdAt.toISOString(),
-          updatedAt: room.updatedAt.toISOString(),
-        },
-      ]);
+      expect(response.body).toEqual({
+        id: hotel.id,
+        name: hotel.name,
+        image: hotel.image,
+        createdAt: hotel.createdAt.toISOString(),
+        updatedAt: hotel.updatedAt.toISOString(),
+        Rooms: [
+          {
+            id: room.id,
+            name: room.name,
+            capacity: room.capacity,
+            hotelId: room.hotelId,
+            createdAt: room.createdAt.toISOString(),
+            updatedAt: room.updatedAt.toISOString(),
+          }
+        ]
+      });
     });
   });
 });
