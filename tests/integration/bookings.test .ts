@@ -4,8 +4,7 @@ import { TicketStatus } from "@prisma/client";
 import httpStatus from "http-status";
 import * as jwt from "jsonwebtoken";
 import supertest from "supertest";
-import { createEnrollmentWithAddress, createUser, createTicket, createTicketTypeWithHotel } from "../factories";
-import { createHotel, createRoom } from "../factories/hotels-factory";
+import { createEnrollmentWithAddress, createUser, createTicket, createTicketTypeWithHotel, createHotel, createRoom, createBooking } from "../factories";
 import { cleanDb, generateValidToken } from "../helpers";
 
 beforeAll(async () => {
@@ -63,12 +62,16 @@ describe("GET /booking", () => {
       await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID); 
       const hotel = await createHotel();
       const room = await createRoom(hotel.id);
+      const booking = await createBooking(user.id, room.id);
       const response = await server.get("/booking").set("Authorization", `Bearer ${token}`);
 
       expect(response.status).toBe(httpStatus.OK);
       expect(response.body).toEqual(
         {
-         
+          id: booking.id,
+          Room: {
+            ...room,
+          }
         }
       );
     });
