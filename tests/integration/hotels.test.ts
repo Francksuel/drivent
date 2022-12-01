@@ -4,8 +4,7 @@ import { TicketStatus } from "@prisma/client";
 import httpStatus from "http-status";
 import * as jwt from "jsonwebtoken";
 import supertest from "supertest";
-import { createEnrollmentWithAddress, createUser, createTicket, createTicketTypeWithHotel } from "../factories";
-import { createHotel, createRoom } from "../factories/hotels-factory";
+import { createEnrollmentWithAddress, createUser, createTicket, createTicketTypeWithHotel, createHotel, createRoom  } from "../factories";
 import { cleanDb, generateValidToken } from "../helpers";
 
 beforeAll(async () => {
@@ -125,7 +124,7 @@ describe("GET /hotels/:hotelId", () => {
     it("should respond with status 404 when hotel id is not valid", async () => {
       const user = await createUser();
       const token = await generateValidToken(user);     
-      const invalidHotelId = 5;
+      const invalidHotelId = 0;
       const response = await server.get("/hotels/"+invalidHotelId).set("Authorization", `Bearer ${token}`);
 
       expect(response.status).toEqual(httpStatus.NOT_FOUND);
