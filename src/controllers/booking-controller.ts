@@ -12,3 +12,13 @@ export async function getBookingWithRoom(req: AuthenticatedRequest, res: Respons
     return res.status(httpStatus.NOT_FOUND).send({});  
   }
 }
+
+export async function postBooking(req: AuthenticatedRequest, res: Response) {
+  const { userId } = req;  
+  try {              
+    const booking = await bookingsService.getBookingByUserId(userId);    
+    return res.status(httpStatus.OK).send(booking);
+  } catch (error) {     
+    return res.status(httpStatus.NOT_FOUND).send({});  
+  }
+}

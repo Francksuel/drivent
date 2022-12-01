@@ -71,6 +71,8 @@ describe("GET /booking", () => {
           id: booking.id,
           Room: {
             ...room,
+            createdAt: room.createdAt.toISOString(),
+            updatedAt: room.updatedAt.toISOString(),
           }
         }
       );
