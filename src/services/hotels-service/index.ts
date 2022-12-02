@@ -33,10 +33,9 @@ async function getRoomsByHotelId(hotelId: number, enrollmentId: number) {
   }  
   return hotel;
 }
-
 const hotelsService = {
   getManyHotels,
-  getRoomsByHotelId
+  getRoomsByHotelId,
 };
   
 export default hotelsService;

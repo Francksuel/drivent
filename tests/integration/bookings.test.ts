@@ -116,7 +116,7 @@ describe("POST /booking", () => {
         roomId: 0
       };
 
-      const response = await server.post("/booking/").set("Authorization", `Bearer ${token}`).send(body);
+      const response = await server.post("/booking").set("Authorization", `Bearer ${token}`).send(body);
 
       expect(response.status).toEqual(httpStatus.NOT_FOUND);
     });
@@ -131,7 +131,7 @@ describe("POST /booking", () => {
       const body = {
         roomId: room.id
       };
-      const response = await server.post("/booking/").set("Authorization", `Bearer ${token}`).send(body);
+      const response = await server.post("/booking").set("Authorization", `Bearer ${token}`).send(body);
 
       expect(response.status).toEqual(httpStatus.FORBIDDEN);
     });    
@@ -146,8 +146,8 @@ describe("POST /booking", () => {
       const body = {
         roomId: room.id
       };
-      await createBooking(user.id, room.id);      
-      const response = await server.post("/booking/").set("Authorization", `Bearer ${token}`).send(body);
+      await createBooking(user.id, room.id);         
+      const response = await server.post("/booking").set("Authorization", `Bearer ${token}`).send(body);
 
       expect(response.status).toEqual(httpStatus.FORBIDDEN);    
     });
@@ -163,12 +163,10 @@ describe("POST /booking", () => {
       const body = {
         roomId: room.id
       };      
-      const response = await server.post("/booking/").set("Authorization", `Bearer ${token}`).send(body);
-      const booking = await createBooking(user.id, room.id);
-      
+      const response = await server.post("/booking").set("Authorization", `Bearer ${token}`).send(body);
       expect(response.status).toEqual(httpStatus.OK);
       expect(response.body).toEqual({
-        bookingId: booking.id
+        id: expect.any(Number)
       });
     });
   });
