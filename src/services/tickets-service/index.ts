@@ -21,8 +21,6 @@ async function getOneByEnrollmentId(enrollmentId: number): Promise<Ticket & {
 async function getOneByTicketId(ticketId: number): Promise<Ticket> {
   const ticket = await ticketRepository.findByTicketId(ticketId);
 
-  if (!ticket.id) throw notFoundError();
-
   return ticket;
 }
 

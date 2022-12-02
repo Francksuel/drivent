@@ -12,10 +12,10 @@ export async function getHotels(req: AuthenticatedRequest, res: Response) {
     
     return res.status(httpStatus.OK).send(hotels);
   } catch (error) {
-    if (error.name === "NotFoundError") {
-      return res.status(httpStatus.NOT_FOUND).send({});
+    if (error.name === "RequestError") {
+      return res.status(httpStatus.BAD_REQUEST).send({});
     }  
-    return res.status(httpStatus.BAD_REQUEST).send({});
+    return res.status(httpStatus.NOT_FOUND).send({});
   }
 }
 export async function getHotelWithRooms(req: AuthenticatedRequest, res: Response) {
@@ -25,10 +25,10 @@ export async function getHotelWithRooms(req: AuthenticatedRequest, res: Response
     const enrollment = await enrollmentsService.getOneWithAddressByUserId(userId);         
     const hotel = await hotelsService.getRoomsByHotelId(hotelId, enrollment.id);    
     return res.status(httpStatus.OK).send(hotel);
-  } catch (error) { 
-    if (error.name === "NotFoundError") {
-      return res.status(httpStatus.NOT_FOUND).send({});
+  } catch (error) {  
+    if (error.name === "RequestError") {
+      return res.status(httpStatus.BAD_REQUEST).send({});
     }  
-    return res.status(httpStatus.BAD_REQUEST).send({});
+    return res.status(httpStatus.NOT_FOUND).send({});
   }
 }
